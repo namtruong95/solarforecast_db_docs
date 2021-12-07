@@ -1,0 +1,119 @@
+table roles {
+  id int4 [pk, increment]
+  name varchar(255)
+}
+
+table companies {
+  id int8 [pk, increment]
+  name varchar(255)
+  address varchar(255)
+  created_at datetime
+  updated_at datetime
+}
+
+table users {
+  id int8 [pk, increment]
+  role_id int4
+  company_id int8 [null]
+  email varchar(255) [unique]
+  password varchar(255)
+  user_name varchar(255) [null]
+  login_failed_count int4 [null]
+  last_login_at datetime [null]
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Ref: users.role_id > roles.id
+Ref: users.company_id > companies.id
+
+table info_install_locations {
+  id int8 [pk, increment]
+  company_id int8
+  name varchar(255)
+  factory_or_building_name varchar(255)
+  address varchar(255)
+  longitude double
+  latitude double
+  standard_height double
+  created_at datetime
+  updated_at datetime
+}
+
+Ref: info_install_locations.company_id > companies.id
+
+table info_panels {
+  id int8 [pk, increment]
+  company_id int8
+  name varchar(255)
+  factory_or_building_name varchar(255)
+  panel_marker varchar(255)
+  system_capacity varchar(255)
+  module_count int4
+  angle_tilted varchar(255)
+  direction varchar(255)
+  forecast_power_generation_annual varchar(255)
+  created_at datetime
+  updated_at datetime
+}
+
+Ref: info_panels.company_id > companies.id
+
+table info_construction_or_maintenances {
+  id int8 [pk, increment]
+  company_id int8
+  name varchar(255)
+  factory_or_building_name varchar(255)
+  company_epc_name varchar(255)
+  company_epc_address varchar(255)
+  company_construction_name varchar(255)
+  company_construction_address varchar(255)
+  company_maintenance_name varchar(255)
+  company_maintenance_address varchar(255)
+  created_at datetime
+  updated_at datetime
+}
+
+Ref: info_construction_or_maintenances.company_id > companies.id
+
+table info_insurances {
+  id int8 [pk, increment]
+  company_id int8
+  name varchar(255)
+  factory_or_building_name varchar(255)
+  company_insurance_name varchar(255)
+  insurance_plan_name varchar(255)
+  created_at datetime
+  updated_at datetime
+}
+
+Ref: info_insurances.company_id > companies.id
+
+table info_subsidies {
+  id int8 [pk, increment]
+  company_id int8
+  name varchar(255)
+  factory_or_building_name varchar(255)
+  subsidy_j_pec varchar(255)
+  subsidy_province_district varchar(255)
+  subsidy_nest_village varchar(255)
+  subsidy_other varchar(255)
+  created_at datetime
+  updated_at datetime
+}
+
+Ref: info_subsidies.company_id > companies.id
+
+
+
+
+
+
+
+
+
+
+
+
+

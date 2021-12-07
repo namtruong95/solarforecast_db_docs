@@ -1,0 +1,317 @@
+table roles {
+  id int4 [pk, increment]
+  name varchar(255)
+}
+
+table customers {
+  id int8 [pk, increment]
+  customer_id varchar(50) [unique, note: 'format: C0000001']
+  name varchar(255)
+  address text
+  status bool
+  created_at datetime
+  updated_at datetime
+  created_by int8
+  updated_by int8 [null]
+}
+
+Ref: customers.created_by > users.id
+Ref: customers.updated_by > users.id
+
+table users {
+  id int8 [pk, increment]
+  role_id int4
+  customer_id int8
+  email varchar(255) [unique]
+  password varchar(255)
+  user_name varchar(255)
+  address text
+  status bool
+  login_failed_count int4 [null]
+  last_login_at datetime [null]
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+  created_by int8
+  updated_by int8 [null]
+  deleted_by int8 [null]
+}
+
+Ref: users.role_id > roles.id
+Ref: users.customer_id > customers.id
+Ref: users.created_by > users.id
+Ref: users.updated_by > users.id
+Ref: users.deleted_by > users.id
+
+Table areas {
+  id int8 [pk, increment]
+  area_id varchar(50) [unique, note: 'format: A0000001']
+  customer_id int8
+  area_name varchar(255)
+  status bool
+  created_at datetime
+  updated_at datetime
+  created_by int8
+  updated_by int8 [null]
+}
+
+Ref: areas.customer_id > customers.id
+Ref: areas.created_by > users.id
+Ref: areas.updated_by > users.id
+
+Table buildings {
+  id int8 [pk, increment]
+  building_id varchar(50) [unique, note: 'format: B0000001']
+  customer_id int8
+  area_id int8
+  name varchar(255)
+  address text
+  longitude double
+  latitude double
+  height int4 [null]
+  status bool
+  created_at datetime
+  updated_at datetime
+  created_by int8
+  updated_by int8 [null]
+}
+
+Ref: buildings.area_id > areas.id
+Ref: buildings.customer_id > customers.id
+Ref: buildings.created_by > users.id
+Ref: buildings.updated_by > users.id
+
+Table solar_panel_groups {
+  id int8 [pk, increment]
+  solar_panel_group_id varchar(50) [unique, note: 'format: S0000001']
+  building_id int8
+  customer_id int8
+  area_id int8
+  panel_maker varchar(255) [null]
+  dimensions varchar(255) [null]
+  installation_height varchar(255) [null]
+  max_voltage double [null]
+  max_designed_voltage double [null]
+  max_current double [null]
+  open_circuit_designed_voltage double [null]
+  short_circuit_designed_current double [null]
+  max_temp_coefficient double [null]
+  open_circuit_voltage_temp_coefficient double [null]
+  short_circuit_current_temp_coefficient double [null]
+  api_address text [null]
+  system_capacity double
+  module_quantity int4 [null]
+  tilt_angle int4 [null]
+  direction varchar(255) [null]
+  pcs_maker text [null]
+  pcs_quantity int4 [null]
+  annual_power_generation_forecast varchar(255)
+  annual_co2_reduction varchar(255)
+  status bool
+  created_at datetime
+  updated_at datetime
+  created_by int8
+  updated_by int8 [null]
+}
+
+Ref: solar_panel_groups.building_id > buildings.id
+Ref: solar_panel_groups.customer_id > customers.id
+Ref: solar_panel_groups.area_id > areas.id
+Ref: solar_panel_groups.created_by > users.id
+Ref: solar_panel_groups.updated_by > users.id
+
+table epc_companies {
+  id int8 [pk, increment]
+  solar_panel_group_id int8
+  customer_id int8
+  name varchar(255) [null]
+  address text [null]
+  created_at datetime
+  updated_at datetime
+  created_by int8
+  updated_by int8 [null]
+}
+
+Ref: epc_companies.solar_panel_group_id > solar_panel_groups.id
+Ref: epc_companies.customer_id > customers.id
+Ref: epc_companies.created_by > users.id
+Ref: epc_companies.updated_by > users.id
+
+table construction_companies {
+  id int8 [pk, increment]
+  solar_panel_group_id int8
+  customer_id int8
+  name varchar(255) [null]
+  address text [null]
+  status bool
+  created_at datetime
+  updated_at datetime
+  created_by int8
+  updated_by int8 [null]
+}
+
+Ref: construction_companies.solar_panel_group_id > solar_panel_groups.id
+Ref: construction_companies.customer_id > customers.id
+Ref: construction_companies.created_by > users.id
+Ref: construction_companies.updated_by > users.id
+
+table maintenance_companies {
+  id int8 [pk, increment]
+  solar_panel_group_id int8
+  customer_id int8
+  name varchar(255) [null]
+  address text [null]
+  status bool
+  created_at datetime
+  updated_at datetime
+  created_by int8
+  updated_by int8 [null]
+}
+
+Ref: maintenance_companies.solar_panel_group_id > solar_panel_groups.id
+Ref: maintenance_companies.customer_id > customers.id
+Ref: maintenance_companies.created_by > users.id
+Ref: maintenance_companies.updated_by > users.id
+
+table insurance_info {
+  id int8 [pk, increment]
+  solar_panel_group_id int8
+  customer_id int8
+  company_name varchar(255)
+  package_name varchar(255)
+  status bool
+  created_at datetime
+  updated_at datetime
+  created_by int8
+  updated_by int8 [null]
+}
+
+Ref: insurance_info.solar_panel_group_id > solar_panel_groups.id
+Ref: insurance_info.customer_id > customers.id
+Ref: insurance_info.created_by > users.id
+Ref: insurance_info.updated_by > users.id
+
+table subsidies_info {
+  id int8 [pk, increment]
+  solar_panel_group_id int8
+  customer_id int8
+  name varchar(255)
+  jpec_subsidy double
+  province_subsidy double
+  city_subsidy double
+  other_subsidy double
+  created_at datetime
+  updated_at datetime
+  created_by int8
+  updated_by int8 [null]
+}
+
+Ref: subsidies_info.solar_panel_group_id > solar_panel_groups.id
+Ref: subsidies_info.customer_id > customers.id
+Ref: subsidies_info.created_by > users.id
+Ref: subsidies_info.updated_by > users.id
+
+table predictions {
+  id int8 [pk, increment]
+  name varchar(255)
+  prediction_created_timestamp datetime
+  prediction_id int8
+  30_power_output int4
+  30_solar_irradiation int4
+  60_power_output int4
+  60_solar_irradiation int4
+  90_power_output int4
+  90_solar_irradiation int4
+  120_power_output int4
+  120_solar_irradiation int4
+  150_power_output int4
+  150_solar_irradiation int4
+  180_power_output int4
+  180_solar_irradiation int4
+  210_power_output int4
+  210_solar_irradiation int4
+  240_power_output int4
+  240_solar_irradiation int4
+  270_power_output int4
+  270_solar_irradiation int4
+  300_power_output int4
+  300_solar_irradiation int4
+  330_power_output int4
+  330_solar_irradiation int4
+  360_power_output int4
+  360_solar_irradiation int4
+  390_power_output int4
+  390_solar_irradiation int4
+  420_power_output int4
+  420_solar_irradiation int4
+  450_power_output int4
+  450_solar_irradiation int4
+  480_power_output int4
+  480_solar_irradiation int4
+  510_power_output int4
+  510_solar_irradiation int4
+  540_power_output int4
+  540_solar_irradiation int4
+  570_power_output int4
+  570_solar_irradiation int4
+  600_power_output int4
+  600_solar_irradiation int4
+  630_power_output int4
+  630_solar_irradiation int4
+  660_power_output int4
+  660_solar_irradiation int4
+  690_power_output int4
+  690_solar_irradiation int4
+  720_power_output int4
+  720_solar_irradiation int4
+  750_power_output int4
+  750_solar_irradiation int4
+  780_power_output int4
+  780_solar_irradiation int4
+  810_power_output int4
+  810_solar_irradiation int4
+  840_power_output int4
+  840_solar_irradiation int4
+  870_power_output int4
+  870_solar_irradiation int4
+  900_power_output int4
+  900_solar_irradiation int4
+  930_power_output int4
+  930_solar_irradiation int4
+  960_power_output int4
+  960_solar_irradiation int4
+  990_power_output int4
+  990_solar_irradiation int4
+  1020_power_output int4
+  1020_solar_irradiation int4
+  1050_power_output int4
+  1050_solar_irradiation int4
+  1080_power_output int4
+  1080_solar_irradiation int4
+  1110_power_output int4
+  1110_solar_irradiation int4
+  1140_power_output int4
+  1140_solar_irradiation int4
+  1170_power_output int4
+  1170_solar_irradiation int4
+  1200_power_output int4
+  1200_solar_irradiation int4
+  1230_power_output int4
+  1230_solar_irradiation int4
+  1260_power_output int4
+  1260_solar_irradiation int4
+  1290_power_output int4
+  1290_solar_irradiation int4
+  1320_power_output int4
+  1320_solar_irradiation int4
+  1350_power_output int4
+  1350_solar_irradiation int4
+  1380_power_output int4
+  1380_solar_irradiation int4
+  1410_power_output int4
+  1410_solar_irradiation int4
+  1440_power_output int4
+  1440_solar_irradiation int4
+  created_at datetime
+  updated_at datetime
+}
