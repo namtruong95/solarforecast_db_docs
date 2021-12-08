@@ -43,51 +43,19 @@ Ref: users.created_by > users.id
 Ref: users.updated_by > users.id
 Ref: users.deleted_by > users.id
 
-Table areas {
-  id int8 [pk, increment]
-  area_id varchar(50) [unique, note: 'format: L0000001']
-  customer_id int8
-  area_name varchar(255)
-  status bool
-  created_at datetime
-  updated_at datetime
-  created_by int8
-  updated_by int8 [null]
-}
-
-Ref: areas.customer_id > customers.id
-Ref: areas.created_by > users.id
-Ref: areas.updated_by > users.id
-
-Table buildings {
-  id int8 [pk, increment]
-  building_id varchar(50) [unique, note: 'format: F0000001']
-  customer_id int8
-  area_id int8
-  name varchar(255)
-  address text
-  longitude double
-  latitude double
-  height int4 [null]
-  status bool
-  created_at datetime
-  updated_at datetime
-  created_by int8
-  updated_by int8 [null]
-}
-
-Ref: buildings.area_id > areas.id
-Ref: buildings.customer_id > customers.id
-Ref: buildings.created_by > users.id
-Ref: buildings.updated_by > users.id
-
 Table solar_panel_groups {
   id int8 [pk, increment]
   solar_panel_group_id varchar(50) [unique, note: 'format: S0000001']
-  hash_key varchar(255) [null]
-  building_id int8
   customer_id int8
-  area_id int8
+  hash_key varchar(255) [null, note: 'hash(area_name + building_name)'] 
+  area_id varchar(50) [note: 'format: L0000001']
+  area_name varchar(255)
+  building_id varchar(50) [note: 'format: F0000001']
+  building_name varchar(255)
+  building_address text
+  longitude double
+  latitude double
+  height int4 [null]
   panel_maker varchar(255) [null]
   dimensions varchar(255) [null]
   installation_height varchar(255) [null]
@@ -128,9 +96,7 @@ Table solar_panel_groups {
   updated_by int8 [null]
 }
 
-Ref: solar_panel_groups.building_id > buildings.id
 Ref: solar_panel_groups.customer_id > customers.id
-Ref: solar_panel_groups.area_id > areas.id
 Ref: solar_panel_groups.created_by > users.id
 Ref: solar_panel_groups.updated_by > users.id
 
