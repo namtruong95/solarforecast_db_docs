@@ -103,6 +103,8 @@ Ref: solar_panel_groups.updated_by > users.id
 table prediction_raws {
   id int8 [pk, increment]
   name varchar(255)
+  area_id int8
+  solar_panel_group_id int8
   prediction_created_timestamp datetime
   prediction_id int8
   30_power_output int4
@@ -208,6 +210,7 @@ table prediction_raws {
 table predictions {
   id int8 [pk, increment]
   prediction_id int8
+  area_id int8
   solar_panel_group_id int8
   prediction_time datetime
   power_output int4
