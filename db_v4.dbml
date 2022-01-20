@@ -94,129 +94,75 @@ Table solar_panel_groups {
   updated_at datetime
   created_by int8
   updated_by int8 [null]
+  deleted bool
 }
 
 Ref: solar_panel_groups.customer_id > customers.id
 Ref: solar_panel_groups.created_by > users.id
 Ref: solar_panel_groups.updated_by > users.id
 
-table prediction_raws {
-  id int8 [pk, increment]
-  name varchar(255)
-  area_id int8
-  solar_panel_group_id int8
-  prediction_created_timestamp datetime
-  prediction_id int8
-  30_power_output int4
-  30_solar_irradiation int4
-  60_power_output int4
-  60_solar_irradiation int4
-  90_power_output int4
-  90_solar_irradiation int4
-  120_power_output int4
-  120_solar_irradiation int4
-  150_power_output int4
-  150_solar_irradiation int4
-  180_power_output int4
-  180_solar_irradiation int4
-  210_power_output int4
-  210_solar_irradiation int4
-  240_power_output int4
-  240_solar_irradiation int4
-  270_power_output int4
-  270_solar_irradiation int4
-  300_power_output int4
-  300_solar_irradiation int4
-  330_power_output int4
-  330_solar_irradiation int4
-  360_power_output int4
-  360_solar_irradiation int4
-  390_power_output int4
-  390_solar_irradiation int4
-  420_power_output int4
-  420_solar_irradiation int4
-  450_power_output int4
-  450_solar_irradiation int4
-  480_power_output int4
-  480_solar_irradiation int4
-  510_power_output int4
-  510_solar_irradiation int4
-  540_power_output int4
-  540_solar_irradiation int4
-  570_power_output int4
-  570_solar_irradiation int4
-  600_power_output int4
-  600_solar_irradiation int4
-  630_power_output int4
-  630_solar_irradiation int4
-  660_power_output int4
-  660_solar_irradiation int4
-  690_power_output int4
-  690_solar_irradiation int4
-  720_power_output int4
-  720_solar_irradiation int4
-  750_power_output int4
-  750_solar_irradiation int4
-  780_power_output int4
-  780_solar_irradiation int4
-  810_power_output int4
-  810_solar_irradiation int4
-  840_power_output int4
-  840_solar_irradiation int4
-  870_power_output int4
-  870_solar_irradiation int4
-  900_power_output int4
-  900_solar_irradiation int4
-  930_power_output int4
-  930_solar_irradiation int4
-  960_power_output int4
-  960_solar_irradiation int4
-  990_power_output int4
-  990_solar_irradiation int4
-  1020_power_output int4
-  1020_solar_irradiation int4
-  1050_power_output int4
-  1050_solar_irradiation int4
-  1080_power_output int4
-  1080_solar_irradiation int4
-  1110_power_output int4
-  1110_solar_irradiation int4
-  1140_power_output int4
-  1140_solar_irradiation int4
-  1170_power_output int4
-  1170_solar_irradiation int4
-  1200_power_output int4
-  1200_solar_irradiation int4
-  1230_power_output int4
-  1230_solar_irradiation int4
-  1260_power_output int4
-  1260_solar_irradiation int4
-  1290_power_output int4
-  1290_solar_irradiation int4
-  1320_power_output int4
-  1320_solar_irradiation int4
-  1350_power_output int4
-  1350_solar_irradiation int4
-  1380_power_output int4
-  1380_solar_irradiation int4
-  1410_power_output int4
-  1410_solar_irradiation int4
-  1440_power_output int4
-  1440_solar_irradiation int4
-  created_at datetime
-  updated_at datetime
-}
-
 table predictions {
   id int8 [pk, increment]
-  prediction_id int8
-  area_id int8
   solar_panel_group_id int8
   prediction_time datetime
-  power_output int4
-  solar_irradiation int4
+  real_power_output double
+  real_solar_irradiation double
+  prediction_power_output double
+  prediction_solar_irradiation double
+  power_output_confidence_low double
+  power_output_confidence_high double
   created_at datetime
   updated_at datetime
 }
 
 Ref:predictions.solar_panel_group_id > solar_panel_groups.id
+
+table chart_by_month_1 {
+  solar_panel_group_id int8
+  key varchar(255)
+  chart_data text
+}
+
+table chart_by_month_2y {
+  solar_panel_group_id int8
+  key varchar(255)
+  chart_data text
+}
+
+table chart_by_month_6 {
+  solar_panel_group_id int8
+  key varchar(255)
+  chart_data text
+}
+
+table chart_by_year_2 {
+  solar_panel_group_id int8
+  key varchar(255)
+  chart_data text
+}
+
+table permissions {
+  id int8 [pk, increment]
+  customer_name varchar(255)
+  email varchar(255)
+  area_name varchar(255)
+  building_name varchar(255)
+  status bool
+  hash_key  varchar(255)
+  created_at datetime
+  updated_at datetime
+  created_by int8
+  updated_by int8 [null]
+}
+
+Ref: permissions.created_by > users.id
+Ref: permissions.updated_by > users.id
+
+table api_keys {
+  id int8 [pk, increment]
+  name varchar(255)
+  key varchar(64)
+  status bool
+  created_at datetime
+  updated_at datetime
+}
